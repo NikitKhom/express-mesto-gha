@@ -1,18 +1,17 @@
 {
   "name": "mesto-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for project Mesto",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint . "
   },
   "author": "Nikita Khomenko",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.42.0",
+    "eslint": "^8.43.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22"
