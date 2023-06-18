@@ -15,9 +15,8 @@ const createCard = (req, res) => {
   const {name, link} = req.body;
   const owner = req.user._id;
   return Card.create({name, link, owner})
-    .populate(['owner', 'likes'])
     .then((card) => {
-      res.status(201).send({data: card});
+      return res.status(201).send({data: card});
     })
     .catch((err) => {
       if (err.name == 'ValidationError') {
@@ -28,7 +27,7 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  return Card.findByIdAndRemove(req.params.cardId)
     .populate(['owner', 'likes'])
     .then((card )=> {
       if (!card) {
@@ -37,12 +36,15 @@ const deleteCard = (req, res) => {
       return res.send({data: card})
     })
     .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).send({message: 'Переданы некорректные данные'});
+      }
       return res.status(500).send({message: 'Произошла ошибка'});
     });
 };
 
 const likeCard = (req, res) => {
-  Card.findByIdAndUpdate(
+  return Card.findByIdAndUpdate(
     req.params.cardId,
     {$addToSet: {likes: req.user._id}},
     {new: true})
@@ -54,7 +56,7 @@ const likeCard = (req, res) => {
       return res.send({data: card})
     })
     .catch((err) => {
-      if (err.name == 'ValidationError') {
+      if (err.name === 'CastError') {
         return res.status(400).send({message: 'Переданы некорректные данные'});
       }
       return res.status(500).send({message: 'Произошла ошибка'});
@@ -62,7 +64,7 @@ const likeCard = (req, res) => {
 };
 
 const dislikeCard = (req, res) => {
-  Card.findByIdAndUpdate(
+  return Card.findByIdAndUpdate(
     req.params.cardId,
     {$pull: {likes: req.user._id}},
     {new: true})
@@ -74,7 +76,8 @@ const dislikeCard = (req, res) => {
       return res.send({data: card})
     })
     .catch((err) => {
-      if (err.name == 'ValidationError') {
+      console.log(err.name);
+      if (err.name === 'CastError') {
         return res.status(400).send({message: 'Переданы некорректные данные'});
       }
       return res.status(500).send({message: 'Произошла ошибка'});
