@@ -1,13 +1,17 @@
-const ServerError = 500;
-const BadRequest = 400;
+const SERVER_ERROR = 500;
+const BAD_REQUEST = 400;
 const OK = 200;
-const Created = 201;
-const NotFoundError = 404;
+const CREATED = 201;
+const NOT_FOUND_ERROR = 404;
+const CONFLICT = 409;
+const UNAUTHORIZED = 401;
 
 module.exports = {
-  ServerError,
-  BadRequest,
+  CONFLICT,
+  SERVER_ERROR,
+  BAD_REQUEST,
   OK,
-  Created,
-  NotFoundError,
+  CREATED,
+  NOT_FOUND_ERROR,
+  UNAUTHORIZED,
 };
