@@ -17,7 +17,7 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
     .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
@@ -25,7 +25,9 @@ const deleteCard = (req, res, next) => {
       } else if (card.owner._id.valueOf() !== req.user._id) {
         throw new Forbidden('Недостаточно прав');
       }
-      res.send({ data: card });
+      Card.findByIdAndRemove(card._id)
+        .then((deletedCard) => res.send({ data: deletedCard }))
+        .catch(next);
     })
     .catch(next);
 };

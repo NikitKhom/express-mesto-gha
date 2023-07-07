@@ -6,6 +6,7 @@ const NOT_FOUND_ERROR = 404;
 const CONFLICT = 409;
 const UNAUTHORIZED = 401;
 const FORBIDDEN = 403;
+const REGEXP_LINK = /https?:\/\/(?:www\.)?[0-9a-zA-Z-]+\.[a-zA-Z]+(?:[-.\w~,:/?#[\]@!$&'()*+;=]*)#?/;
 
 module.exports = {
   CONFLICT,
@@ -16,4 +17,5 @@ module.exports = {
   NOT_FOUND_ERROR,
   UNAUTHORIZED,
   FORBIDDEN,
+  REGEXP_LINK,
 };

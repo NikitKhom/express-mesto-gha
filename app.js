@@ -6,12 +6,13 @@ const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-error');
 const router = require('./routes/index');
 const adminRouter = require('./routes/admin');
+const errorHandler = require('./middlewares/error-handler');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
-mongoose.connect('mongodb://0.0.0.0:27017/mestodb', {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 }).then(() => {
   console.log('connected to db');
@@ -24,19 +25,7 @@ app.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
 app.use(errors());
-app.use((err, req, res, next) => {
-  // console.log(req.params);
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log('Server is running on port', PORT);
