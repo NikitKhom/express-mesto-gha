@@ -1,5 +1,5 @@
-const BadRequest = require('../errors/bad-request');
 const NotFoundError = require('../errors/not-found-error');
+const Forbidden = require('../errors/forbidden');
 const { CREATED } = require('../utils/constants');
 const Card = require('../models/card');
 
@@ -23,7 +23,7 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       } else if (card.owner._id.valueOf() !== req.user._id) {
-        throw new BadRequest('Недостаточно прав');
+        throw new Forbidden('Недостаточно прав');
       }
       res.send({ data: card });
     })
