@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-error');
 const router = require('./routes/index');
 const adminRouter = require('./routes/admin');
-const { errors } = require('celebrate');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 });
 app.use(errors());
 app.use((err, req, res, next) => {
+  console.log(err);
   const { statusCode = 500, message } = err;
   res
     .status(statusCode)

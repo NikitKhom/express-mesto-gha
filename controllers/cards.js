@@ -13,32 +13,21 @@ const createCard = (req, res, next) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((card) => res.status(CREATED).send({ data: card }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 const deleteCard = (req, res, next) => {
-  if (req.params.id !== req.user._id) {
-    throw new BadRequest('Недостаточно прав');
-  }
   Card.findByIdAndRemove(req.params.cardId)
     .populate(['owner', 'likes'])
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
+      } else if (card.owner._id.valueOf() !== req.user._id) {
+        throw new BadRequest('Недостаточно прав');
       }
-      return res.send({ data: card });
+      res.send({ data: card });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 const likeCard = (req, res, next) => Card.findByIdAndUpdate(
@@ -51,14 +40,9 @@ const likeCard = (req, res, next) => Card.findByIdAndUpdate(
     if (!card) {
       throw new NotFoundError('Карточка не найдена');
     }
-    return res.send({ data: card });
+    res.send({ data: card });
   })
-  .catch((err) => {
-    if (err.name === 'CastError') {
-      next(new BadRequest('Переданы некорректные данные'));
-    }
-    next(err);
-  });
+  .catch(next);
 
 const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   req.params.cardId,
@@ -70,14 +54,9 @@ const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
     if (!card) {
       throw new NotFoundError('Карточка не найдена');
     }
-    return res.send({ data: card });
+    res.send({ data: card });
   })
-  .catch((err) => {
-    if (err.name === 'CastError') {
-      next(new BadRequest('Переданы некорректные данные'));
-    }
-    next(err);
-  });
+  .catch(next);
 
 module.exports = {
   getCards,

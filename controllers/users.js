@@ -19,12 +19,7 @@ const getInfoById = (req, res, id, next) => User.findById(id)
     }
     res.send({ data: user });
   })
-  .catch((err) => {
-    if (err.name === 'CastError') {
-      next(new BadRequest('Переданы некорректные данные'));
-    }
-    next(err);
-  });
+  .catch(next);
 
 const getUserById = (req, res, next) => getInfoById(req, res, req.params.id, next);
 
@@ -45,9 +40,7 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res.status(CREATED).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      } else if (err.code === 11000) {
+      if (err.code === 11000) {
         next(new Conflict('Пользователь уже существует'));
       }
       next(err);
@@ -67,12 +60,7 @@ const updateUserInfo = (req, res, next) => {
       }
       res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 const updateUserAvatar = (req, res, next) => {
@@ -86,14 +74,9 @@ const updateUserAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      return res.send({ data: user });
+      res.send({ data: user });
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 const login = (req, res, next) => {

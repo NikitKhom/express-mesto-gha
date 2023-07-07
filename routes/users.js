@@ -13,11 +13,13 @@ userRouter.patch('/me', celebrate({
     about: Joi.string().required().min(2).max(30),
   }),
 }), updateUserInfo);
+
 userRouter.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    link: Joi.string().required(),
+    avatar: Joi.string().required(),
   }),
 }), updateUserAvatar);
+
 userRouter.get('/:id', getUserById);
 
 module.exports = userRouter;
