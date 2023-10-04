@@ -1,6 +1,14 @@
 [![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
 # Проект Mesto фронтенд + бэкенд
 
+## О проекте
+Бекенд для приложения mesto. Реализована серверная часть с ипользованием базы данных для предоставления данных о пользователях и фотографиях Mesto SPA.
+
+## Использованные технологии
+* Node.js
+* Express
+* MovgoDB
+* Postman
 
 ## Директории
 
