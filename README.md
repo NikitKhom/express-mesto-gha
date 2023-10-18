@@ -7,7 +7,7 @@
 ## Использованные технологии
 * Node.js
 * Express
-* MovgoDB
+* MongoDB
 * Postman
 
 ## Директории
